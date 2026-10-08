@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>수학 오답노트 AI</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color-scheme:light dark;--bg:light-dark(#f5f7fb,#0b1020);--card:light-dark(#fff,#151b2e);--text:light-dark(#111827,#f3f4f6);--muted:light-dark(#667085,#a9b1c3);--line:light-dark(#e5e7eb,#2b3348);--accent:#635bff;--danger:#ef4444;--ok:#10b981;--warn:#f59e0b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}button,input,select{font:inherit}.app{min-height:100vh;background:var(--bg)}header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:16px}h1{font-size:21px;margin:0 0 4px}.sub{font-size:12px;color:var(--muted)}main{max-width:980px;margin:auto;padding:14px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:13px;position:sticky;top:67px;z-index:15}.tab{border:1px solid var(--line);background:var(--card);color:var(--text);padding:11px 6px;border-radius:12px;font-weight:800;font-size:13px}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}section{display:none}.section.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 5px 20px #0000000a}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.btn{border:0;border-radius:13px;padding:13px 11px;font-weight:800;cursor:pointer;background:var(--accent);color:#fff}.btn.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.btn.danger{background:var(--danger)}.btn.ok{background:var(--ok)}.btn.warn{background:var(--warn);color:#111}.btn:disabled{opacity:.45;cursor:not-allowed}input[type=file]{display:none}.drop{border:2px dashed var(--line);border-radius:15px;padding:21px;text-align:center;color:var(--muted);margin-bottom:10px;cursor:pointer}.preview{width:100%;max-height:440px;object-fit:contain;border-radius:12px;background:#f0f2f5;display:none}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}.item{border:1px solid var(--line);border-radius:14px;padding:8px;background:var(--card);overflow:hidden}.item img{width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:9px;background:#f0f2f5}.item small{display:block;margin-top:7px;color:var(--muted)}.row{display:flex;gap:8px;align-items:center;justify-content:space-between}.hint{font-size:12.5px;color:var(--muted);line-height:1.55}.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#fee2e2;color:#b91c1c;font-size:12px;font-weight:800}.toolbar{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}.toolbar .btn{padding:9px 11px}.canvasWrap{position:relative;overflow:hidden;border-radius:14px;background:#ddd;touch-action:none}.canvasWrap canvas{width:100%;display:block}.empty{text-align:center;padding:30px;color:var(--muted);border:1px dashed var(--line);border-radius:14px}.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{padding:12px;border:1px solid var(--line);border-radius:13px;text-align:center}.stat b{font-size:20px;display:block}.stat span{font-size:11px;color:var(--muted)}.progress{height:7px;background:var(--line);border-radius:99px;overflow:hidden;margin:9px 0}.progress i{display:block;height:100%;width:0;background:var(--accent)}.check{display:flex;gap:8px;align-items:center;margin:8px 0}.check input{width:18px;height:18px}.mini{font-size:11px;color:var(--muted)}.analysis{margin-top:9px;border:1px solid var(--line);border-radius:12px;padding:10px;background:color-mix(in srgb,var(--card) 90%,var(--accent) 10%)}.analysis h4{margin:0 0 7px;font-size:13px}.analysis p{margin:5px 0;font-size:12px;line-height:1.5}.analysisGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{width:100%;min-height:220px;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--text);resize:vertical}@media(max-width:600px){.analysisGrid{grid-template-columns:1fr}}
+@media(max-width:600px){.actions{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(4,1fr)}.tab{font-size:11px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media print{header,.tabs,.no-print{display:none!important}.app,body{background:#fff;color:#111}.card{box-shadow:none;border:0;page-break-inside:avoid}.printOnly{display:block!important}.print-item{page-break-inside:avoid;margin-bottom:20px}.print-item img{max-width:100%;max-height:90vh;display:block;margin:auto}.print-title{font-size:18px;margin:0 0 10px}}
+.printOnly{display:none}
+</style>
+</head>
+<body><div class="app">
+<header><h1>📝 수학 오답노트 AI</h1><div class="sub">사진 → 채점/답 제거 → 오답 추출 → 오답노트 → ChatGPT 분석</div></header>
+<main>
+<div class="tabs"><button class="tab active" data-tab="clean">① 정리</button><button class="tab" data-tab="wrong">② 오답 추출</button><button class="tab" data-tab="note">③ 오답노트</button><button class="tab" data-tab="ai">④ AI 분석</button></div>
+<section id="clean" class="section active">
+<div class="card"><h3>1. 문제 사진에서 채점/학생 답 제거</h3><p class="hint">사진을 올리면 색상 기반 채점 표시 제거를 먼저 수행합니다. 학생 답처럼 검정/연필색인 부분은 자동으로 완벽하게 구분하기 어렵기 때문에 브러시로 추가 삭제할 수 있습니다.</p>
+<label class="drop">📷 문제 사진 촬영 / 선택<input id="photoInput" type="file" accept="image/*" capture="environment"></label>
+<div id="editor" style="display:none"><div class="toolbar"><button class="btn secondary" id="removeMarks">🔴 채점색 제거</button><button class="btn secondary" id="grayMarks">🔵/🔴 색상 정리</button><button class="btn warn" id="undoErase">↩ 되돌리기</button><button class="btn secondary" id="clearAll">원본 복원</button><button class="btn" id="saveClean">사진 저장</button><button class="btn ok" id="addClean">오답노트에 추가</button></div><div class="canvasWrap"><canvas id="canvas"></canvas></div><p class="hint">손가락으로 문지르면 해당 영역이 투명하게 지워집니다. 브러시 크기는 아래에서 조절합니다.</p><input id="brush" type="range" min="10" max="160" value="55" style="width:100%"></div></div>
+</section>
+<section id="wrong" class="section">
+<div class="card"><h3>2. 채점된 시험지에서 틀린 문제 추출</h3><p class="hint">여러 장을 한 번에 올릴 수 있습니다. 빨간 ✕, 체크, 점수표시 등의 색상 영역을 찾아 주변 영역을 오답 후보로 잘라냅니다. 자동 인식 결과는 반드시 확인해 주세요.</p>
+<label class="drop">📷 채점 사진 여러 장<input id="gradedInput" type="file" accept="image/*" capture="environment" multiple></label>
+<div class="actions"><button class="btn" id="extractWrong">❌ 틀린 문제 자동 추출</button><button class="btn" id="splitPage">✂️ 문제별 자동 분리</button><button class="btn secondary" id="manualAdd">➕ 정리된 사진 추가</button><button class="btn secondary" id="splitClean">🧹 문제별 분리+채점 제거</button></div><div id="extractProgress" class="progress"><i></i></div><div class="mini" id="extractStatus"></div></div>
+<div class="card"><div class="row"><h3 style="margin:0">오답 후보 <span class="badge" id="wrongCount">0</span></h3><button class="btn danger no-print" id="clearWrong">전체 삭제</button></div><div id="wrongGrid" class="grid" style="margin-top:10px"></div></div>
+</section>
+<section id="note" class="section">
+<div class="card"><div class="row"><div><h3 style="margin:0">3. 오답노트</h3><span class="badge" id="count">0문제</span></div><button class="btn ok no-print" id="printNote">📄 PDF 저장/인쇄</button></div>
+<div class="stat" style="margin-top:10px"><div><b id="nTotal">0</b><span>전체 오답</span></div><div><b id="nSelected">0</b><span>AI 분석 선택</span></div><div><b id="nToday">0</b><span>오늘 추가</span></div></div>
+<p class="hint">오답을 선택한 뒤 PDF로 저장하거나 AI 분석 탭에서 ChatGPT로 보낼 수 있습니다. <b>문제별 자동 분리</b>는 시험지의 가로 여백을 분석해 문제 영역을 나눕니다. 사진 상태에 따라 분리 결과를 확인해 주세요.</p><div class="toolbar no-print"><button class="btn secondary" id="selectAll">전체 선택</button><button class="btn secondary" id="deselectAll">전체 해제</button><button class="btn ok" id="shareSelected">선택 문제 ChatGPT로 공유</button></div></div>
+<div id="noteGrid" class="grid"></div>
+<div id="printArea" class="printOnly"></div>
+</section>
+<section id="ai" class="section">
+<div class="card"><h3>4. ChatGPT 오답 분석</h3><p class="hint">선택한 오답 사진을 ChatGPT 앱으로 보내 분석합니다. 분석 결과를 아래에 붙여넣으면 앱이 문제별 오답노트에 자동 저장합니다. 별도 AI 서버나 API Key가 필요 없습니다.</p>
+<div class="check"><input id="includePrompt" type="checkbox" checked><label for="includePrompt">구조화된 저장용 JSON 분석 요청 포함</label></div>
+<div class="actions"><button class="btn ok" id="shareAI">🤖 ChatGPT로 오답 분석</button><button class="btn secondary" id="copyPrompt">분석 프롬프트 복사</button></div>
+<p class="hint" style="margin-top:12px">※ iPhone에서는 공유 화면에서 ChatGPT를 선택합니다. 공유가 지원되지 않으면 사진을 ChatGPT에 직접 첨부하고, 아래 프롬프트를 붙여넣으면 됩니다.</p></div>
+<div class="card"><h3>5. ChatGPT 분석 결과 가져오기</h3><p class="hint">ChatGPT가 반환한 JSON 전체를 붙여넣고 <b>분석 결과 저장</b>을 누르세요. 선택된 오답과 결과를 순서대로 연결합니다.</p><textarea id="aiResult" placeholder="ChatGPT JSON을 붙여넣으세요."></textarea><div class="toolbar"><button class="btn ok" id="importAI">💾 분석 결과 저장</button><button class="btn secondary" id="exportAI">⬇️ 오답노트 JSON 백업</button><label class="btn secondary" style="display:inline-flex;align-items:center;cursor:pointer">⬆️ JSON 가져오기<input id="importJson" type="file" accept="application/json" style="display:none"></label></div><div id="aiImportStatus" class="hint"></div></div>
+<div class="card"><h3>저장되는 오답노트 항목</h3><div class="analysisGrid"><div><b>① 문제</b><br>문제 내용</div><div><b>② 내 답</b><br>학생이 적은 답</div><div><b>③ 정답</b><br>정확한 정답</div><div><b>④ 틀린 이유</b><br>실수/개념 오류</div><div><b>⑤ 풀이</b><br>단계별 풀이</div><div><b>⑥ 핵심 개념</b><br>기억할 개념</div><div><b>⑦ 유사문제</b><br>연습문제와 정답</div></div></div>
+</section>
+</main>
+<div id="editModal" style="display:none;position:fixed;inset:0;z-index:100;background:#000b;padding:18px;overflow:auto"><div class="card" style="max-width:900px;margin:0 auto"><div class="row"><h3 style="margin:0">오답 문제 편집</h3><button class="btn secondary" id="closeEditor">닫기</button></div><p class="hint">빨간 채점 표시나 학생 답을 손가락으로 문질러 지울 수 있습니다. 저장하면 오답노트 이미지가 교체됩니다.</p><div class="toolbar"><button class="btn secondary" id="editRemoveRed">🔴 빨간 표시 제거</button><button class="btn secondary" id="editRemoveColor">🎨 색상 정리</button><button class="btn warn" id="editUndo">↩ 되돌리기</button><button class="btn secondary" id="editReset">원본 복원</button><label class="mini" style="display:flex;align-items:center;gap:6px">지우개 <input id="editBrush" type="range" min="8" max="180" value="45"></label></div><div class="canvasWrap"><canvas id="editCanvas"></canvas></div><button class="btn ok" id="editSave" style="width:100%;margin-top:10px">저장하고 오답노트 반영</button></div></div></div>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='mathWrongNoteV2';
+let wrong=JSON.parse(localStorage.getItem(KEY)||'[]');
+let graded=[];let cleanImg=null;let undoStack=[];
+function persist(){localStorage.setItem(KEY,JSON.stringify(wrong));renderAll()}
+function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random()}
+$$('.tab').forEach(b=>b.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.section').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.tab).classList.add('active');renderAll(); });
+function loadImage(file){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=URL.createObjectURL(file)})}
+const canvas=$('#canvas'),ctx=canvas.getContext('2d');
+$('#photoInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;cleanImg=await loadImage(f);canvas.width=cleanImg.naturalWidth;canvas.height=cleanImg.naturalHeight;ctx.drawImage(cleanImg,0,0);undoStack=[];$('#editor').style.display='block'};
+function snapshot(){undoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));if(undoStack.length>12)undoStack.shift()}
+function eraseAt(ev){if(!canvas.width)return;const r=canvas.getBoundingClientRect(),sx=canvas.width/r.width,sy=canvas.height/r.height,x=(ev.clientX-r.left)*sx,y=(ev.clientY-r.top)*sy;snapshot();ctx.save();ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(x,y,+$('#brush').value,0,Math.PI*2);ctx.fill();ctx.restore()}
+let drawing=false;canvas.addEventListener('pointerdown',e=>{drawing=true;canvas.setPointerCapture(e.pointerId);eraseAt(e)});canvas.addEventListener('pointermove',e=>{if(drawing){const r=canvas.getBoundingClientRect(),sx=canvas.width/r.width,sy=canvas.height/r.height,x=(e.clientX-r.left)*sx,y=(e.clientY-r.top)*sy;ctx.save();ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(x,y,+$('#brush').value,0,Math.PI*2);ctx.fill();ctx.restore()}});canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false);
+$('#undoErase').onclick=()=>{const d=undoStack.pop();if(d)ctx.putImageData(d,0,0)};
+function colorClean(mode='red'){if(!canvas.width)return;snapshot();const d=ctx.getImageData(0,0,canvas.width,canvas.height),p=d.data;for(let i=0;i<p.length;i+=4){let r=p[i],g=p[i+1],b=p[i+2];let red=r>125&&r>g*1.25&&r>b*1.25;let blue=b>115&&b>r*1.25&&b>g*1.08;let target=mode==='red'?red:(red||blue);if(target){let y=.299*r+.587*g+.114*b;p[i]=p[i+1]=p[i+2]=y;p[i+3]=255}}ctx.putImageData(d,0,0)}
+$('#removeMarks').onclick=()=>colorClean('red');$('#grayMarks').onclick=()=>colorClean('both');
+$('#clearAll').onclick=()=>{if(cleanImg){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(cleanImg,0,0);undoStack=[]}};
+$('#saveClean').onclick=()=>{canvas.toBlob(b=>downloadBlob(b,'cleaned-problem.jpg'),'image/jpeg',.93)}; $('#addClean').onclick=()=>addCleanCanvas();
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('#gradedInput').onchange=e=>{graded=[...e.target.files];$('#extractStatus').textContent=graded.length+'장 선택됨'};
+$('#manualAdd').onclick=()=>$('#photoInput').click();
+function redPixels(im){const c=document.createElement('canvas'),w=im.naturalWidth,h=im.naturalHeight;c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);const d=x.getImageData(0,0,w,h).data;const mask=new Uint8Array(w*h);let count=0,minX=w,minY=h,maxX=0,maxY=0;for(let y=0;y<h;y+=2){for(let xx=0;xx<w;xx+=2){let i=(y*w+xx)*4,r=d[i],g=d[i+1],b=d[i+2];if(r>145&&r>g*1.32&&r>b*1.28){mask[y*w+xx]=1;count++;minX=Math.min(minX,xx);minY=Math.min(minY,y);maxX=Math.max(maxX,xx);maxY=Math.max(maxY,y)}}}return {c,w,h,mask,count,minX,minY,maxX,maxY}}
+async function detectWrong(file){
+ const im=await loadImage(file);
+ const c=document.createElement('canvas'),w=im.naturalWidth,h=im.naturalHeight;c.width=w;c.height=h;
+ const x=c.getContext('2d');x.drawImage(im,0,0);
+ const d=x.getImageData(0,0,w,h).data;
+ const step=3,sw=Math.ceil(w/step),sh=Math.ceil(h/step),mask=new Uint8Array(sw*sh);
+ let count=0;
+ for(let yy=0;yy<sh;yy++){
+  for(let xx=0;xx<sw;xx++){
+   const px=Math.min(w-1,xx*step),py=Math.min(h-1,yy*step),i=(py*w+px)*4,r=d[i],g=d[i+1],b=d[i+2];
+   if(r>145&&r>g*1.32&&r>b*1.28){mask[yy*sw+xx]=1;count++;}
+  }
+ }
+ if(count<15)return [];
+ const visited=new Uint8Array(sw*sh),comps=[];
+ for(let yy=0;yy<sh;yy++)for(let xx=0;xx<sw;xx++){
+  const start=yy*sw+xx;if(!mask[start]||visited[start])continue;
+  const q=[[xx,yy]];visited[start]=1;let minX=xx,minY=yy,maxX=xx,maxY=yy,n=0;
+  for(let qi=0;qi<q.length;qi++){
+   const [px,py]=q[qi];n++;minX=Math.min(minX,px);minY=Math.min(minY,py);maxX=Math.max(maxX,px);maxY=Math.max(maxY,py);
+   for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+    const nx=px+dx,ny=py+dy;if(nx>=0&&ny>=0&&nx<sw&&ny<sh){const ni=ny*sw+nx;if(mask[ni]&&!visited[ni]){visited[ni]=1;q.push([nx,ny]);}}
+   }
+  }
+  if(n>=4)comps.push({minX:minX*step,minY:minY*step,maxX:Math.min(w-1,(maxX+1)*step),maxY:Math.min(h-1,(maxY+1)*step),n});
+ }
+ comps.sort((a,b)=>a.minY-b.minY||a.minX-b.minX);
+ const merged=[];
+ for(const p of comps){
+  const found=merged.find(m=>!(p.minX>m.maxX+w*.07||p.maxX<m.minX-w*.07||p.minY>m.maxY+h*.08||p.maxY<m.minY-h*.08));
+  if(found){found.minX=Math.min(found.minX,p.minX);found.minY=Math.min(found.minY,p.minY);found.maxX=Math.max(found.maxX,p.maxX);found.maxY=Math.max(found.maxY,p.maxY);found.n+=p.n;}else merged.push({...p});
+ }
+ const results=[];
+ for(const m of merged.slice(0,40)){
+  let padX=Math.max(55,w*.07),padY=Math.max(45,h*.045);
+  let x1=Math.max(0,m.minX-padX),y1=Math.max(0,m.minY-padY),x2=Math.min(w,m.maxX+padX),y2=Math.min(h,m.maxY+padY);
+  if(x2-x1<w*.18){x1=Math.max(0,x1-w*.08);x2=Math.min(w,x2+w*.08);}
+  if(y2-y1<h*.12){y1=Math.max(0,y1-h*.05);y2=Math.min(h,y2+h*.05);}
+  const out=document.createElement('canvas');out.width=Math.round(x2-x1);out.height=Math.round(y2-y1);
+  out.getContext('2d').drawImage(c,x1,y1,out.width,out.height,0,0,out.width,out.height);
+  results.push(out.toDataURL('image/jpeg',.93));
+ }
+ return results;
+}
+$('#extractWrong').onclick=async()=>{if(!graded.length){alert('채점된 사진을 먼저 선택하세요.');return}let added=0;$('#extractStatus').textContent='분석 중...';for(let i=0;i<graded.length;i++){let arr=await detectWrong(graded[i]);arr.forEach(src=>{wrong.push({id:uid(),src,name:'오답 '+(wrong.length+1),selected:true,created:Date.now(),source:graded[i].name});added++});$('#extractProgress i').style.width=((i+1)/graded.length*100)+'%'}persist();$('#extractStatus').textContent=added+'개 오답 후보를 만들었습니다. 아래에서 불필요한 후보는 삭제하세요.';if(!added)alert('빨간 채점 표시를 찾지 못했습니다. 색이 다른 경우 사진 정리 기능에서 표시를 제거하거나 사진을 직접 추가하세요.')};
+function addCleanCanvas(){if(!canvas.width)return;const src=canvas.toDataURL('image/jpeg',.93);wrong.push({id:uid(),src,name:'직접 추가 '+(wrong.length+1),selected:true,created:Date.now(),source:'수동'});persist();alert('오답노트에 추가했습니다.')}
+
+$('#clearWrong').onclick=()=>{if(confirm('오답노트를 모두 삭제할까요?')){wrong=[];persist()}};
+function toggle(id){const x=wrong.find(v=>v.id===id);if(x){x.selected=!x.selected;persist()}}
+
+let editTarget=null,editImg=null,editUndo=[];const editCanvas=document.querySelector('#editCanvas'),editCtx=editCanvas.getContext('2d');
+function openEditor(it){editTarget=it;const im=new Image();im.onload=()=>{editImg=im;editCanvas.width=im.naturalWidth;editCanvas.height=im.naturalHeight;editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);editCtx.drawImage(im,0,0);editUndo=[];$('#editModal').style.display='block'};im.src=it.src}
+function editSnap(){editUndo.push(editCtx.getImageData(0,0,editCanvas.width,editCanvas.height));if(editUndo.length>10)editUndo.shift()}
+function editColor(mode){editSnap();const d=editCtx.getImageData(0,0,editCanvas.width,editCanvas.height),p=d.data;for(let i=0;i<p.length;i+=4){const r=p[i],g=p[i+1],b=p[i+2];const red=r>120&&r>g*1.25&&r>b*1.2,blue=b>110&&b>r*1.2&&b>g*1.05;if(mode==='red'?red:(red||blue)){const y=.299*r+.587*g+.114*b;p[i]=p[i+1]=p[i+2]=y}}editCtx.putImageData(d,0,0)}
+let editDrawing=false;function editErase(e){const r=editCanvas.getBoundingClientRect(),x=(e.clientX-r.left)*editCanvas.width/r.width,y=(e.clientY-r.top)*editCanvas.height/r.height;editCtx.save();editCtx.globalCompositeOperation='destination-out';editCtx.beginPath();editCtx.arc(x,y,+$('#editBrush').value,0,Math.PI*2);editCtx.fill();editCtx.restore()}
+editCanvas.addEventListener('pointerdown',e=>{editDrawing=true;editCanvas.setPointerCapture(e.pointerId);editSnap();editErase(e)});editCanvas.addEventListener('pointermove',e=>{if(editDrawing)editErase(e)});editCanvas.addEventListener('pointerup',()=>editDrawing=false);editCanvas.addEventListener('pointercancel',()=>editDrawing=false);
+$('#closeEditor').onclick=()=>$('#editModal').style.display='none';$('#editRemoveRed').onclick=()=>editColor('red');$('#editRemoveColor').onclick=()=>editColor('both');$('#editUndo').onclick=()=>{const d=editUndo.pop();if(d)editCtx.putImageData(d,0,0)};$('#editReset').onclick=()=>{editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);editCtx.drawImage(editImg,0,0);editUndo=[]};$('#editSave').onclick=()=>{if(!editTarget)return;editTarget.src=editCanvas.toDataURL('image/jpeg',.94);persist();$('#editModal').style.display='none'};
+function cleanRedDataURL(src){return new Promise(res=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const x=c.getContext('2d');x.drawImage(im,0,0);const d=x.getImageData(0,0,c.width,c.height),p=d.data;for(let i=0;i<p.length;i+=4){const r=p[i],g=p[i+1],b=p[i+2];if(r>125&&r>g*1.25&&r>b*1.2){const y=.299*r+.587*g+.114*b;p[i]=p[i+1]=p[i+2]=y}}x.putImageData(d,0,0);res(c.toDataURL('image/jpeg',.94))};im.src=src})}
+async function splitProblems(file,clean=false){const im=await loadImage(file),w=im.naturalWidth,h=im.naturalHeight;const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);const d=x.getImageData(0,0,w,h).data;const step=Math.max(3,Math.floor(w/700)), rows=Math.ceil(h/step),ink=new Float32Array(rows);for(let yy=0;yy<rows;yy++){let n=0;for(let xx=0;xx<w;xx+=step){const i=(Math.min(h-1,yy*step)*w+xx)*4,r=d[i],g=d[i+1],b=d[i+2],gray=(r+g+b)/3;if(gray<205)n++}ink[yy]=n/(w/step)}const gaps=[];let inGap=false,start=0;for(let y=0;y<rows;y++){if(ink[y]<.018&&!inGap){inGap=true;start=y}else if(ink[y]>=.018&&inGap){if(y-start>=Math.max(5,rows*.006))gaps.push([start,y]);inGap=false}}const cuts=[0];for(const g of gaps){const yy=((g[0]+g[1])/2)*step;if(yy>h*.08&&yy<h*.94&&yy-cuts[cuts.length-1]>h*.12)cuts.push(yy)}cuts.push(h);const parts=[];for(let i=0;i<cuts.length-1;i++){let y1=Math.max(0,Math.floor(cuts[i]-step*3)),y2=Math.min(h,Math.ceil(cuts[i+1]+step*3));if(y2-y1<h*.10)continue;const o=document.createElement('canvas');o.width=w;o.height=y2-y1;o.getContext('2d').drawImage(c,0,y1,w,y2-y1,0,0,w,y2-y1);let src=o.toDataURL('image/jpeg',.94);if(clean)src=await cleanRedDataURL(src);parts.push(src)}return parts}
+async function addSplitParts(clean=false){if(!graded.length){alert('먼저 채점된 시험지 사진을 선택하세요.');return}let total=0;$('#extractStatus').textContent='문제 영역을 분리하는 중...';for(let i=0;i<graded.length;i++){const arr=await splitProblems(graded[i],clean);arr.forEach((src,j)=>{wrong.push({id:uid(),src,name:`${graded[i].name} · 문제 ${j+1}`,selected:true,created:Date.now(),source:graded[i].name,autoSplit:true});total++});$('#extractProgress i').style.width=((i+1)/graded.length*100)+'%'}persist();$('#extractStatus').textContent=`${total}개 문제 영역을 분리했습니다. 오답이 아닌 문제는 삭제하고 필요한 문제는 편집하세요.`}
+$('#splitPage').onclick=()=>addSplitParts(false);$('#splitClean').onclick=()=>addSplitParts(true);
+function renderAll(){renderWrong();renderNote();$('#count').textContent=wrong.length+'문제';$('#wrongCount').textContent=wrong.length;$('#nTotal').textContent=wrong.length;$('#nSelected').textContent=wrong.filter(x=>x.selected).length;const today=new Date().toDateString();$('#nToday').textContent=wrong.filter(x=>new Date(x.created||0).toDateString()===today).length}
+function esc(v){return String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function analysisHtml(a){if(!a)return '';const fields=[['문제','문제'],['내 답','내답'],['정답','정답'],['틀린 이유','틀린이유'],['풀이','풀이'],['핵심 개념','핵심개념'],['유사문제','유사문제']];return '<div class="analysis"><h4>🤖 ChatGPT 오답 분석</h4>'+fields.map(([label,key])=>a[key]?'<p><b>'+label+'</b><br>'+esc(a[key]).replace(/\n/g,'<br>')+'</p>':'').join('')+'</div>'}
+function card(it,i){const el=document.createElement('div');el.className='item';el.innerHTML='<img src="'+it.src+'"><div class="check"><input type="checkbox" '+(it.selected?'checked':'')+'><label>AI 분석에 포함</label></div><small>'+esc(it.name)+'</small>'+analysisHtml(it.analysis)+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px"><button class="btn secondary editBtn" style="padding:8px">✏️ 편집</button><button class="btn secondary delBtn" style="padding:8px">삭제</button></div>';el.querySelector('input').onchange=()=>toggle(it.id);el.querySelector('.delBtn').onclick=()=>{wrong=wrong.filter(x=>x.id!==it.id);persist()};el.querySelector('.editBtn').onclick=()=>openEditor(it);return el}
+function renderWrong(){const g=$('#wrongGrid');g.innerHTML='';if(!wrong.length){g.innerHTML='<div class="empty">아직 오답이 없습니다.</div>';return}wrong.forEach((it,i)=>g.appendChild(card(it,i)))}
+function renderNote(){const g=$('#noteGrid');g.innerHTML='';if(!wrong.length){g.innerHTML='<div class="empty">오답을 추출하면 여기에 오답노트가 만들어집니다.</div>';return}wrong.forEach((it,i)=>g.appendChild(card(it,i)));const p=$('#printArea');p.innerHTML='<h1 class="print-title">수학 오답노트</h1>'+wrong.map((it,i)=>'<div class="print-item"><h2>오답 '+(i+1)+'</h2><img src="'+it.src+'">'+analysisHtml(it.analysis)+'</div>').join('')}
+function promptText(){return `다음 사진들은 수학 오답노트입니다. 사진마다 문제를 정확히 읽고 한국어로 분석해 주세요. 반드시 JSON 배열 하나만 반환하세요. Markdown 코드블록이나 설명 문장은 넣지 마세요. 형식은 [{"문제":"문제 내용","내답":"학생 답","정답":"정답","틀린이유":"왜 틀렸는지","풀이":"초등학생도 이해하기 쉬운 단계별 풀이","핵심개념":"핵심 개념 1~3개","유사문제":"비슷한 연습문제 1개와 정답"}] 입니다. 사진 순서대로 객체를 만들고, 여러 문제가 한 사진에 있으면 문제별 객체로 나누세요. 학생 답이 확실하지 않으면 확인 필요라고 표시하세요.`}
+async function selectedFiles(){const arr=wrong.filter(x=>x.selected);const files=[];for(let i=0;i<arr.length;i++){const res=await fetch(arr[i].src);const blob=await res.blob();files.push(new File([blob],`오답-${i+1}.jpg`,{type:'image/jpeg'}))}return files}
+async function shareAI(){const arr=wrong.filter(x=>x.selected);if(!arr.length){alert('AI 분석할 오답을 먼저 선택하세요.');return}const files=await selectedFiles();const text=$('#includePrompt').checked?promptText():'수학 오답 문제입니다. 사진을 분석해 정답과 풀이, 틀린 이유를 한국어로 설명해 주세요.';if(navigator.share&&navigator.canShare&&navigator.canShare({files})){try{await navigator.share({title:'수학 오답노트 분석',text,files})}catch(e){if(e.name!=='AbortError')fallbackShare(text)}}else fallbackShare(text)}
+async function fallbackShare(text){try{await navigator.clipboard.writeText(text)}catch(e){}alert('이 기기에서는 사진 공유를 직접 지원하지 않습니다. 분석 프롬프트를 복사했습니다. ChatGPT 앱을 열고 선택한 오답 사진을 첨부해 주세요.')}
+function normalizeAnalysis(a){return {문제:a.문제??a.question??'',내답:a.내답??a['내 답']??a.studentAnswer??'',정답:a.정답??a.answer??'',틀린이유:a.틀린이유??a['틀린 이유']??a.reason??'',풀이:a.풀이??a.solution??'',핵심개념:a.핵심개념??a['핵심 개념']??a.concept??'',유사문제:a.유사문제??a['유사 문제']??a.similar??''}}
+function parseAIText(raw){let t=raw.trim().replace(/^```(?:json)?/i,'').replace(/```$/,'').trim();let data=JSON.parse(t);if(!Array.isArray(data))data=[data];return data.map(normalizeAnalysis)}
+$('#importAI').onclick=()=>{try{const results=parseAIText($('#aiResult').value);const targets=wrong.filter(x=>x.selected);if(!targets.length){alert('분석 결과를 연결할 오답을 먼저 선택하세요.');return}if(results.length!==targets.length&&!confirm('선택 오답 '+targets.length+'개 / 분석 결과 '+results.length+'개입니다. 순서대로 가능한 항목만 저장할까요?'))return;const n=Math.min(results.length,targets.length);for(let i=0;i<n;i++)targets[i].analysis=results[i];persist();$('#aiImportStatus').textContent=n+'개 분석 결과를 오답노트에 저장했습니다.';$('#aiResult').value=''}catch(e){alert('JSON 형식이 올바르지 않습니다. ChatGPT가 반환한 JSON 배열 전체를 붙여넣어 주세요.')}};
+$('#exportAI').onclick=()=>{const blob=new Blob([JSON.stringify(wrong,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='수학-오답노트-백업.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#importJson').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{wrong=JSON.parse(r.result);persist();$('#aiImportStatus').textContent='오답노트 백업을 불러왔습니다.'}catch(err){alert('JSON 백업 파일을 읽을 수 없습니다.')}};r.readAsText(f)};
+
+$('#shareSelected').onclick=shareAI;$('#shareAI').onclick=shareAI;$('#copyPrompt').onclick=async()=>{await navigator.clipboard.writeText(promptText());alert('분석 프롬프트를 복사했습니다.')};$('#selectAll').onclick=()=>{wrong.forEach(x=>x.selected=true);persist()};$('#deselectAll').onclick=()=>{wrong.forEach(x=>x.selected=false);persist()};
+$('#printNote').onclick=()=>{renderNote();window.print()};
+renderAll();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
